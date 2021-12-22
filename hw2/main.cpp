@@ -1,122 +1,38 @@
-#include <algorithm>
-#include <fstream>
 #include <iostream>
-#include <string>
-#include <vector>
-
-
-namespace {
-
-    const float g = 9.81;
-
-    struct Vector {
-        float x;
-        float y;
-
-        Vector reflect() const {
-            return {-x, y};
+#include <fstream>
+#include <cmath>
+#define g 9.81
+int main() {
+    std::ifstream input_file("in.txt");
+    double h0;
+    input_file >> h0;
+    double vx;
+    double vy;
+    input_file >> vx >>vy;
+    double v0 = sqrt(vx ^ 2 + vy ^ 2);
+    double a = atan(vx / vy);
+    double y(double x) {
+        return (h0 + x * tan(a) - (g * x ^ 2) / (2 * v0 ^ 2 * cos ^ 2(a)));
+    }
+    double x1;
+    double x2=0;
+    double h1;
+    double h2=1000;
+    int k=0;
+    while (input_file){
+        input_file >> x1 >>h1;
+        if (y(x1)<=h1){
+            x1=2*x1-x2;
+            if (y(x1)<=h2){
+                return(k-1)
+            }
+            return (k);
         }
-    };
-
-    Vector integratePos(const Vector &pos, const Vector &vel, float endX) {
-        const float time = (endX - pos.x) / vel.x;
-        const float height = pos.y + vel.y * time - 0.5f * time * time * g;
-
-        return {endX, height};
-    }
-
-    Vector integrateVel(const Vector &pos, const Vector &vel, float endX) {
-        const float time = (endX - pos.x) / vel.x;
-
-        return {vel.x, vel.y - g * time};
-    }
-
-    int findClosestBarrier(const Vector &pos, const Vector &vel,
-                           const std::vector<Vector> &barriers) {
-        int i;
-
-        if (vel.x > 0) {
-            for (i = 0; i < barriers.size(); ++i) {
-                if (barriers.at(i).x > pos.x) {
-                    return i;
-                }
-            }
-        } else {
-            for (i = barriers.size() - 1; i >= 0; --i) {
-                if (barriers.at(i).x < pos.x) {
-                    return i;
-                }
-            }
+        else{
+            x2=x1;
+            h2=h1;
+            k=k+1;
         }
-
-        return i;
     }
-
-    int findeSector(const Vector &startPos, const Vector &startVel,
-                    std::vector<Vector> &barriers) {
-        std::sort(barriers.begin(), barriers.end(),
-                  [](Vector a, Vector b) {
-                      return a.x < b.x;
-                  });
-
-        Vector pos = startPos;
-        Vector vel = startVel;
-        int nextBarrier = findClosestBarrier(startPos, startVel, barriers);
-
-        while (pos.y > 0) {
-            if (nextBarrier > static_cast<int>(barriers.size()) - 1) {
-                return barriers.size();
-            } else if (nextBarrier < 0) {
-                return 0;
-            }
-
-            const Vector newPos = integratePos(pos, vel, barriers[nextBarrier].x);
-            vel = integrateVel(pos, vel, barriers[nextBarrier].x);
-            pos = newPos;
-
-            if (pos.y < barriers[nextBarrier].y) {
-                vel = vel.reflect();
-            }
-
-            if (vel.x > 0) {
-                ++nextBarrier;
-            } else {
-                --nextBarrier;
-            }
-        }
-
-        return vel.x > 0 ? nextBarrier : nextBarrier + 1;
-    }
-} // namespace
-
-int main(int argc, char **argv) {
-    float h0;
-    float vx, vy;
-    float x, h;
-    std::string filename;
-    std::vector<Vector> barriers;
-
-    if (argc == 2) {
-        filename = argv[1];
-    } else {
-        return -1;
-    }
-
-    std::ifstream input(filename);
-
-    input >> h0;
-    input >> vx >> vy;
-
-    while (input >> x >> h) {
-        barriers.push_back({x, h});
-    }
-
-    const Vector startPos = {0.f, h0};
-    const Vector startVel = {vx, vy};
-
-    int answer = findeSector(startPos, startVel, barriers);
-
-    std::cout << answer << std::endl;
-
-    return 0;
 }
+
