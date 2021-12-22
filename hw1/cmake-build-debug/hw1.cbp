@@ -83,6 +83,9 @@
 		<Unit filename="C:/Users/Андрей/Desktop/работы/прога/Homework/hw1/main.cpp">
 			<Option target="hw1"/>
 		</Unit>
+		<Unit filename="C:/Users/Андрей/Desktop/работы/прога/Homework/hw1/main2.cpp">
+			<Option target="hw1"/>
+		</Unit>
 		<Unit filename="C:/Users/Андрей/Desktop/работы/прога/Homework/hw1/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
