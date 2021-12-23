@@ -1,1 +1,1 @@
-HW V1
+VARIANT#1
