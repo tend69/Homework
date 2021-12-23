@@ -9,10 +9,11 @@ int main() {
     double vx;
     double vy;
     input_file >> vx >>vy;
-    double v0 = sqrt(vx ^ 2 + vy ^ 2);
+    double v0 = sqrt(vx*vx + vy*vy);
     double a = atan(vx / vy);
+    double c = cos(a);
     double y(double x) {
-        return (h0 + x * tan(a) - (g * x ^ 2) / (2 * v0 ^ 2 * cos ^ 2(a)));
+        return (h0 + x *(vx/vy) - (g * x ^ 2) / (2 * v0 ^ 2 * c * c));
     }
     double x1;
     double x2=0;

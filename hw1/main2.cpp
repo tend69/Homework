@@ -13,10 +13,12 @@ int main(){
     double yr=yn;
     double yl=yn;
     double a = atan(xn/yn);
+    double s = sin(a);
+    double c = cos(a);
     while (input_file){
         input_file >> xn >> yn;
-        double x1=xn*cos(a)+yn*sin(a);
-        double y1=yn*cos(a)-xn*sin(a);
+        double x1=xn*c+yn*s;
+        double y1=yn*c-xn*s;
         if ((y1/x1)<0 && (y1/x1)<(yr/xr)){
             x1=xr;
             y1=yr;
